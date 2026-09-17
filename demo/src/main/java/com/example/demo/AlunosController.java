@@ -1,6 +1,8 @@
 package com.example.demo;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +25,10 @@ public class AlunosController {
     }
 
     @PostMapping
-    public String cadastrar(){
-        return "Cadastrar Aluno";
+    public ResponseEntity<Aluno> cadastrar(
+            @RequestBody Aluno aluno){
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(aluno);
     }
 }
