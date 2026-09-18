@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.aluno;
 
 public record Aluno(Integer matricula,
                     String nome,
