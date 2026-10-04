@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Notificação SINAN | Listagem</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Ir para a listagem</a>
+
+<header class="topbar">
+    <nav class="nav" aria-label="Navegação principal">
+        <a class="brand" href="index.html">
+            <span class="brand-mark" aria-hidden="true">+</span>
+            <span>Notificação SINAN</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Cadastro</a>
+            <a href="listagem.html" aria-current="page">Listagem</a>
+            <a href="duplicidades.html">Duplicidades</a>
+        </div>
+    </nav>
+</header>
+
+<main id="conteudo" class="shell">
+    <header class="hero">
+        <div>
+            <p class="eyebrow">Consulta e acompanhamento</p>
+            <h1>Notificações registradas</h1>
+            <p class="intro">Use os filtros para localizar registros, ordene pelas colunas e acesse as ações de alteração ou exclusão.</p>
+        </div>
+        <a class="button primary" href="index.html">+ Nova notificação</a>
+    </header>
+
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+
+    <section class="panel" aria-labelledby="tituloFiltros">
+        <div class="form-rail" aria-hidden="true"></div>
+        <div class="panel-heading">
+            <h2 id="tituloFiltros">Filtros de busca</h2>
+            <span class="mode-chip">Filtros combinados</span>
+        </div>
+
+        <form id="filtros" class="filters">
+            <div class="filters-grid">
+                <div>
+                    <label for="agravo">Agravo ou doença</label>
+                    <input id="agravo" name="agravo" type="text">
+                </div>
+                <div>
+                    <label for="nome">Nome do paciente</label>
+                    <input id="nome" name="nome" type="text">
+                </div>
+                <div>
+                    <label for="dataNotificacao">Data da notificação</label>
+                    <input id="dataNotificacao" name="dataNotificacao" type="date">
+                </div>
+                <div>
+                    <label for="ufResidencia">UF de residência</label>
+                    <select id="ufResidencia" name="ufResidencia"></select>
+                </div>
+                <div>
+                    <label for="munResidencia">Município de residência</label>
+                    <input id="munResidencia" name="munResidencia" type="text">
+                </div>
+                <div>
+                    <label for="cFinal">Classificação final</label>
+                    <select id="cFinal" name="cFinal"></select>
+                </div>
+                <div>
+                    <label for="criterio">Critério de confirmação</label>
+                    <select id="criterio" name="criterio"></select>
+                </div>
+                <div>
+                    <label for="autoctone">Caso autóctone</label>
+                    <select id="autoctone" name="autoctone"></select>
+                </div>
+                <div>
+                    <label for="evolucao">Evolução do caso</label>
+                    <select id="evolucao" name="evolucao"></select>
+                </div>
+                <div>
+                    <label for="ordenarPor">Ordenar por</label>
+                    <select id="ordenarPor" name="ordenarPor">
+                        <option value="numero">Número</option>
+                        <option value="dataNotificacao">Data da notificação</option>
+                        <option value="agravo">Agravo</option>
+                        <option value="nome">Nome do paciente</option>
+                        <option value="ufResidencia">UF de residência</option>
+                        <option value="munResidencia">Município</option>
+                        <option value="cFinal">Classificação final</option>
+                        <option value="criterio">Critério</option>
+                        <option value="autoctone">Caso autóctone</option>
+                        <option value="evolucao">Evolução</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="ordem">Direção</label>
+                    <select id="ordem" name="ordem">
+                        <option value="ASC">Crescente</option>
+                        <option value="DESC">Decrescente</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="qtde">Itens por página</label>
+                    <select id="qtde" name="qtde">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+                <div class="filter-actions">
+                    <button id="limpar" class="button secondary" type="button">Limpar</button>
+                    <button class="button primary" type="submit">Aplicar filtros</button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section class="table-card" aria-labelledby="tituloTabela">
+        <div class="table-summary">
+            <div>
+                <h2 id="tituloTabela" class="table-title">Resultados</h2>
+                <p id="resumo">Carregando notificações…</p>
+            </div>
+            <span id="paginaAtual" class="mode-chip">Página 1</span>
+        </div>
+
+        <div class="table-scroll">
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">
+                        <button class="sort-button" type="button" data-sort="numero">Número</button>
+                    </th>
+                    <th scope="col">
+                        <button class="sort-button" type="button" data-sort="dataNotificacao">Data</button>
+                    </th>
+                    <th scope="col">
+                        <button class="sort-button" type="button" data-sort="agravo">Agravo</button>
+                    </th>
+                    <th scope="col">
+                        <button class="sort-button" type="button" data-sort="nome">Paciente</button>
+                    </th>
+                    <th scope="col">
+                        <button class="sort-button" type="button" data-sort="ufResidencia">Residência</button>
+                    </th>
+                    <th scope="col">
+                        <button class="sort-button" type="button" data-sort="cFinal">Classificação</button>
+                    </th>
+                    <th scope="col">
+                        <button class="sort-button" type="button" data-sort="evolucao">Evolução</button>
+                    </th>
+                    <th scope="col">Ações</th>
+                </tr>
+                </thead>
+                <tbody id="corpoTabela">
+                <tr>
+                    <td class="empty-cell" colspan="8">Carregando dados…</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <nav class="pagination" aria-label="Paginação">
+        <span id="infoPaginacao" class="pagination-info">Página 1</span>
+        <div class="pagination-buttons">
+            <button id="anterior" class="button secondary" type="button">← Anterior</button>
+            <button id="proxima" class="button secondary" type="button">Próxima →</button>
+        </div>
+    </nav>
+</main>
+
+<footer>Interface demonstrativa para a API de notificações SINAN.</footer>
+
+<script>
+    "use strict";
+
+    const API = "/notificacoes";
+    let pagina = 1;
+    let itensAtuais = [];
+
+    const formulario = document.getElementById("filtros");
+    const corpoTabela = document.getElementById("corpoTabela");
+    const resumo = document.getElementById("resumo");
+    const paginaAtual = document.getElementById("paginaAtual");
+    const infoPaginacao = document.getElementById("infoPaginacao");
+    const anterior = document.getElementById("anterior");
+    const proxima = document.getElementById("proxima");
+    const status = document.getElementById("status");
+
+    const ufs = [
+        "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS",
+        "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC",
+        "SP", "SE", "TO"
+    ];
+
+    const opcoes = {
+        cFinal: [["CODIGO_1", "Confirmado"], ["CODIGO_2", "Descartado"]],
+        criterio: [
+            ["CODIGO_1", "Laboratório"], ["CODIGO_2", "Clínico-epidemiológico"]
+        ],
+        autoctone: [
+            ["CODIGO_1", "Sim"], ["CODIGO_2", "Não"], ["CODIGO_3", "Indeterminado"]
+        ],
+        evolucao: [
+            ["CODIGO_1", "Cura"], ["CODIGO_2", "Óbito pelo agravo notificado"],
+            ["CODIGO_3", "Óbito por outras causas"], ["CODIGO_9", "Ignorado"]
+        ]
+    };
+
+    function preencherSelect(id, itens) {
+        const select = document.getElementById(id);
+        const vazio = document.createElement("option");
+        vazio.value = "";
+        vazio.textContent = "Todos";
+        select.append(vazio);
+
+        itens.forEach(function (item) {
+            const option = document.createElement("option");
+            option.value = item[0];
+            option.textContent = item[1];
+            select.append(option);
+        });
+    }
+
+    preencherSelect("ufResidencia", ufs.map(function (uf) { return [uf, uf]; }));
+    preencherSelect("cFinal", opcoes.cFinal);
+    preencherSelect("criterio", opcoes.criterio);
+    preencherSelect("autoctone", opcoes.autoctone);
+    preencherSelect("evolucao", opcoes.evolucao);
+
+    function descricao(valor) {
+        if (valor === null || valor === undefined) return "—";
+        if (typeof valor === "object") return valor.descricao || valor.codigo || "—";
+        return String(valor);
+    }
+
+    function formatarData(data) {
+        if (!data) return "—";
+        const partes = String(data).split("-");
+        if (partes.length !== 3) return String(data);
+        return partes[2] + "/" + partes[1] + "/" + partes[0];
+    }
+
+    function mostrarStatus(tipo, titulo, mensagens) {
+        status.replaceChildren();
+        status.className = "status visible " + tipo;
+
+        const destaque = document.createElement("strong");
+        destaque.textContent = titulo;
+        status.append(destaque);
+
+        if (mensagens && mensagens.length) {
+            const lista = document.createElement("ul");
+            mensagens.forEach(function (mensagem) {
+                const item = document.createElement("li");
+                item.textContent = mensagem;
+                lista.append(item);
+            });
+            status.append(lista);
+        }
+    }
+
+    function limparStatus() {
+        status.className = "status";
+        status.replaceChildren();
+    }
+
+    function mensagensDoErro(corpo) {
+        if (!corpo) return ["A API não retornou detalhes sobre o erro."];
+        if (typeof corpo === "string") return [corpo];
+
+        const mensagens = [];
+        if (corpo.detail) mensagens.push(corpo.detail);
+        if (Array.isArray(corpo.erros)) {
+            corpo.erros.forEach(function (erro) { mensagens.push(String(erro)); });
+        } else if (corpo.erros && typeof corpo.erros === "object") {
+            Object.entries(corpo.erros).forEach(function (entrada) {
+                const erros = Array.isArray(entrada[1]) ? entrada[1] : [entrada[1]];
+                erros.forEach(function (erro) {
+                    mensagens.push(entrada[0] + ": " + erro);
+                });
+            });
+        }
+        if (mensagens.length === 0 && corpo.title) mensagens.push(corpo.title);
+        return mensagens.length ? mensagens : ["Não foi possível concluir a operação."];
+    }
+
+    async function lerResposta(resposta) {
+        if (resposta.status === 204) return null;
+        const tipo = resposta.headers.get("content-type") || "";
+        return tipo.includes("json") ? resposta.json() : resposta.text();
+    }
+
+    function parametrosDaBusca() {
+        const parametros = new URLSearchParams();
+        parametros.set("pagina", String(pagina));
+        parametros.set("qtde", document.getElementById("qtde").value);
+        parametros.set("ordenarPor", document.getElementById("ordenarPor").value);
+        parametros.set("ordem", document.getElementById("ordem").value);
+
+        ["agravo", "nome", "dataNotificacao", "ufResidencia", "munResidencia", "cFinal", "criterio", "autoctone", "evolucao"]
+            .forEach(function (nome) {
+                const valor = document.getElementById(nome).value.trim();
+                if (valor !== "") parametros.set(nome, valor);
+            });
+
+        return parametros;
+    }
+
+    function adicionarTexto(celula, principal, detalhe) {
+        const forte = document.createElement("span");
+        forte.className = "cell-main";
+        forte.textContent = principal || "—";
+        celula.append(forte);
+
+        if (detalhe) {
+            const nota = document.createElement("span");
+            nota.className = "cell-note";
+            nota.textContent = detalhe;
+            celula.append(nota);
+        }
+    }
+
+    function celula(linha, principal, detalhe) {
+        const td = document.createElement("td");
+        adicionarTexto(td, principal, detalhe);
+        linha.append(td);
+        return td;
+    }
+
+    function renderizarTabela(itens) {
+        corpoTabela.replaceChildren();
+
+        if (!itens.length) {
+            const linha = document.createElement("tr");
+            const td = document.createElement("td");
+            td.className = "empty-cell";
+            td.colSpan = 8;
+            td.textContent = "Nenhuma notificação encontrada para os filtros informados.";
+            linha.append(td);
+            corpoTabela.append(linha);
+            return;
+        }
+
+        itens.forEach(function (notificacao) {
+            const linha = document.createElement("tr");
+            celula(linha, String(notificacao.numero));
+            celula(linha, formatarData(notificacao.dadosGerais.dataNotificacao));
+            celula(linha, notificacao.dadosGerais.agravo, descricao(notificacao.dadosGerais.tipoNotificacao));
+            celula(linha, notificacao.paciente.nome, descricao(notificacao.paciente.sexo));
+            celula(
+                linha,
+                notificacao.dadosDeResidencia.municipio || "—",
+                descricao(notificacao.dadosDeResidencia.uf)
+            );
+            celula(
+                linha,
+                descricao(notificacao.conclusao.classificacaoFinal),
+                descricao(notificacao.conclusao.criterioDeConfirmacao)
+            );
+            celula(linha, descricao(notificacao.conclusao.evolucaoCaso));
+
+            const acoes = document.createElement("td");
+            const grupo = document.createElement("div");
+            grupo.className = "actions";
+
+            const editar = document.createElement("a");
+            editar.className = "button secondary compact";
+            editar.href = "index.html?numero=" + encodeURIComponent(notificacao.numero);
+            editar.textContent = "Alterar";
+            editar.setAttribute("aria-label", "Alterar notificação " + notificacao.numero);
+
+            const excluir = document.createElement("button");
+            excluir.className = "button danger compact";
+            excluir.type = "button";
+            excluir.textContent = "Excluir";
+            excluir.setAttribute("aria-label", "Excluir notificação " + notificacao.numero);
+            excluir.addEventListener("click", function () {
+                excluirNotificacao(notificacao.numero, excluir);
+            });
+
+            grupo.append(editar, excluir);
+            acoes.append(grupo);
+            linha.append(acoes);
+            corpoTabela.append(linha);
+        });
+    }
+
+    function atualizarOrdenacao() {
+        const campo = document.getElementById("ordenarPor").value;
+        const ordem = document.getElementById("ordem").value;
+
+        document.querySelectorAll(".sort-button").forEach(function (botao) {
+            const ativo = botao.dataset.sort === campo;
+            botao.dataset.active = String(ativo);
+            botao.dataset.arrow = ordem === "ASC" ? "↑" : "↓";
+            botao.setAttribute("aria-pressed", String(ativo));
+        });
+    }
+
+    function atualizarPaginacao() {
+        const quantidade = Number(document.getElementById("qtde").value);
+        paginaAtual.textContent = "Página " + pagina;
+        infoPaginacao.textContent = "Página " + pagina + " · até " + quantidade + " itens";
+        anterior.disabled = pagina === 1;
+        proxima.disabled = itensAtuais.length < quantidade;
+    }
+
+    async function carregar() {
+        resumo.textContent = "Carregando notificações…";
+        corpoTabela.replaceChildren();
+        const linha = document.createElement("tr");
+        const td = document.createElement("td");
+        td.className = "empty-cell";
+        td.colSpan = 8;
+        td.textContent = "Carregando dados…";
+        linha.append(td);
+        corpoTabela.append(linha);
+        anterior.disabled = true;
+        proxima.disabled = true;
+        atualizarOrdenacao();
+
+        try {
+            const resposta = await fetch(API + "?" + parametrosDaBusca().toString());
+            const corpo = await lerResposta(resposta);
+            if (!resposta.ok) throw corpo;
+
+            itensAtuais = Array.isArray(corpo) ? corpo : (corpo.itens || []);
+            renderizarTabela(itensAtuais);
+            resumo.textContent = itensAtuais.length === 1
+                ? "1 notificação nesta página"
+                : itensAtuais.length + " notificações nesta página";
+            atualizarPaginacao();
+        } catch (erro) {
+            itensAtuais = [];
+            renderizarTabela([]);
+            resumo.textContent = "Falha ao consultar a API";
+            mostrarStatus("error", "Não foi possível carregar as notificações", mensagensDoErro(erro));
+            atualizarPaginacao();
+        }
+    }
+
+    async function excluirNotificacao(numero, botao) {
+        const confirmou = window.confirm("Excluir definitivamente a notificação " + numero + "?");
+        if (!confirmou) return;
+
+        botao.disabled = true;
+        botao.textContent = "Excluindo…";
+
+        try {
+            const resposta = await fetch(API + "/" + encodeURIComponent(numero), { method: "DELETE" });
+            const corpo = await lerResposta(resposta);
+            if (!resposta.ok) throw corpo;
+
+            if (itensAtuais.length === 1 && pagina > 1) pagina -= 1;
+            mostrarStatus("success", "Notificação excluída", ["O registro " + numero + " foi removido."]);
+            await carregar();
+        } catch (erro) {
+            mostrarStatus("error", "Não foi possível excluir a notificação", mensagensDoErro(erro));
+            botao.disabled = false;
+            botao.textContent = "Excluir";
+        }
+    }
+
+    formulario.addEventListener("submit", function (evento) {
+        evento.preventDefault();
+        pagina = 1;
+        limparStatus();
+        carregar();
+    });
+
+    document.getElementById("limpar").addEventListener("click", function () {
+        formulario.reset();
+        pagina = 1;
+        limparStatus();
+        carregar();
+    });
+
+    document.querySelectorAll(".sort-button").forEach(function (botao) {
+        botao.addEventListener("click", function () {
+            const ordenarPor = document.getElementById("ordenarPor");
+            const ordem = document.getElementById("ordem");
+
+            if (ordenarPor.value === botao.dataset.sort) {
+                ordem.value = ordem.value === "ASC" ? "DESC" : "ASC";
+            } else {
+                ordenarPor.value = botao.dataset.sort;
+                ordem.value = "ASC";
+            }
+
+            pagina = 1;
+            carregar();
+        });
+    });
+
+    anterior.addEventListener("click", function () {
+        if (pagina > 1) {
+            pagina -= 1;
+            carregar();
+            document.getElementById("tituloTabela").scrollIntoView({ behavior: "smooth" });
+        }
+    });
+
+    proxima.addEventListener("click", function () {
+        pagina += 1;
+        carregar();
+        document.getElementById("tituloTabela").scrollIntoView({ behavior: "smooth" });
+    });
+
+    carregar();
+</script>
+</body>
+</html>

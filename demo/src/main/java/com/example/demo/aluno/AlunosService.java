@@ -1,6 +1,5 @@
 package com.example.demo.aluno;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ public class AlunosService {
 
     public Aluno cadastrar(Aluno aluno){
         alunos.add(aluno);
+
         return aluno;
     }
 }

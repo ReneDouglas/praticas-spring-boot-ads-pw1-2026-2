@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Notificação SINAN | Cadastro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Ir para o formulário</a>
+
+<header class="topbar">
+    <nav class="nav" aria-label="Navegação principal">
+        <a class="brand" href="index.html">
+            <span class="brand-mark" aria-hidden="true">+</span>
+            <span>Notificação SINAN</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" aria-current="page">Cadastro</a>
+            <a href="listagem.html">Listagem</a>
+            <a href="duplicidades.html">Duplicidades</a>
+        </div>
+    </nav>
+</header>
+
+<main id="conteudo" class="shell">
+    <header class="hero">
+        <div>
+            <p class="eyebrow">Vigilância epidemiológica · demonstração</p>
+            <h1 id="tituloPagina">Nova notificação</h1>
+            <p class="intro">Registre os dados da ocorrência. Os campos marcados com asterisco são obrigatórios.</p>
+        </div>
+        <span id="modo" class="mode-chip">Modo cadastro</span>
+    </header>
+
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+
+    <form id="formulario" class="form-card" novalidate>
+        <div class="form-rail" aria-hidden="true"></div>
+
+        <fieldset>
+            <legend>
+                <span class="section-heading">
+                    <span class="section-number">01</span>
+                    <h2>Dados gerais</h2>
+                </span>
+            </legend>
+            <div class="grid">
+                <div class="field small">
+                    <label for="numero">Número da notificação *</label>
+                    <input id="numero" name="numero" type="number" data-api-field="numero">
+                </div>
+                <div class="field small">
+                    <label for="tipoNotificacao">Tipo *</label>
+                    <select id="tipoNotificacao" data-api-field="dadosGerais.tipoNotificacao"></select>
+                </div>
+                <div class="field half">
+                    <label for="agravo">Agravo ou doença *</label>
+                    <input id="agravo" type="text" data-api-field="dadosGerais.agravo">
+                </div>
+                <div class="field">
+                    <label for="dataNotificacao">Data da notificação *</label>
+                    <input id="dataNotificacao" type="date" data-api-field="dadosGerais.dataNotificacao">
+                </div>
+                <div class="field">
+                    <label for="ufNotificacao">UF da unidade *</label>
+                    <select id="ufNotificacao" data-api-field="dadosGerais.uf"></select>
+                </div>
+                <div class="field">
+                    <label for="municipioNotificacao">Município *</label>
+                    <input id="municipioNotificacao" type="search" list="municipiosNotificacao" autocomplete="off" data-api-field="dadosGerais.municipio">
+                    <datalist id="municipiosNotificacao"></datalist>
+                </div>
+                <div class="field">
+                    <label for="ubs">Unidade de saúde *</label>
+                    <input id="ubs" type="text" data-api-field="dadosGerais.ubs">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>
+                <span class="section-heading">
+                    <span class="section-number">02</span>
+                    <h2>Paciente</h2>
+                </span>
+            </legend>
+            <div class="grid">
+                <div class="field wide">
+                    <label for="nomePaciente">Nome completo *</label>
+                    <input id="nomePaciente" type="text" autocomplete="name" data-api-field="paciente.nome">
+                </div>
+                <div class="field">
+                    <label for="dataPrimeirosSintomas">Primeiros sintomas *</label>
+                    <input id="dataPrimeirosSintomas" type="date" data-api-field="paciente.dataPrimeirosSintomas">
+                </div>
+                <div class="field">
+                    <label for="dataNascimento">Data de nascimento</label>
+                    <input id="dataNascimento" type="date" data-api-field="paciente.dataNascimento">
+                    <p class="hint">Informe a data ou a idade, nunca ambos.</p>
+                </div>
+                <div class="field small">
+                    <label for="idadeValor">Idade</label>
+                    <input id="idadeValor" type="number" data-api-field="paciente.idade.valor">
+                </div>
+                <div class="field small">
+                    <label for="idadeUnidade">Unidade da idade</label>
+                    <select id="idadeUnidade" data-api-field="paciente.idade.unidade"></select>
+                </div>
+                <div class="field small">
+                    <label for="sexo">Sexo *</label>
+                    <select id="sexo" data-api-field="paciente.sexo"></select>
+                </div>
+                <div class="field small">
+                    <label for="gestante">Gestante <span class="optional">(quando aplicável)</span></label>
+                    <select id="gestante" data-api-field="paciente.gestante"></select>
+                </div>
+                <div class="field small">
+                    <label for="raca">Raça/cor <span class="optional">(opcional)</span></label>
+                    <select id="raca" data-api-field="paciente.raca"></select>
+                </div>
+                <div class="field">
+                    <label for="escolaridade">Escolaridade <span class="optional">(opcional)</span></label>
+                    <select id="escolaridade" data-api-field="paciente.escolaridade"></select>
+                </div>
+                <div class="field">
+                    <label for="cartaoSUS">Cartão SUS <span class="optional">(opcional)</span></label>
+                    <input id="cartaoSUS" type="text" placeholder="000-0000-0000-0000" data-api-field="paciente.cartaoSUS">
+                </div>
+                <div class="field wide">
+                    <label for="nomeMae">Nome da mãe <span class="optional">(opcional)</span></label>
+                    <input id="nomeMae" type="text" data-api-field="paciente.nomeMae">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>
+                <span class="section-heading">
+                    <span class="section-number">03</span>
+                    <h2>Residência</h2>
+                </span>
+            </legend>
+            <div class="grid">
+                <div class="field">
+                    <label for="paisResidencia">País <span class="optional">(vazio para Brasil)</span></label>
+                    <input id="paisResidencia" type="text" data-api-field="dadosDeResidencia.pais">
+                </div>
+                <div class="field">
+                    <label for="ufResidencia">UF *</label>
+                    <select id="ufResidencia" data-api-field="dadosDeResidencia.uf"></select>
+                </div>
+                <div class="field">
+                    <label for="municipioResidencia">Município *</label>
+                    <input id="municipioResidencia" type="search" list="municipiosResidencia" autocomplete="off" data-api-field="dadosDeResidencia.municipio">
+                    <datalist id="municipiosResidencia"></datalist>
+                </div>
+                <div class="field">
+                    <label for="distritoResidencia">Distrito <span class="optional">(opcional)</span></label>
+                    <input id="distritoResidencia" type="text" data-api-field="dadosDeResidencia.distrito">
+                </div>
+                <div class="field">
+                    <label for="bairroResidencia">Bairro <span class="optional">(opcional)</span></label>
+                    <input id="bairroResidencia" type="text" data-api-field="dadosDeResidencia.bairro">
+                </div>
+                <div class="field wide">
+                    <label for="logradouro">Logradouro <span class="optional">(opcional)</span></label>
+                    <input id="logradouro" type="text" autocomplete="street-address" data-api-field="dadosDeResidencia.logradouro">
+                </div>
+                <div class="field small">
+                    <label for="numeroResidencia">Número <span class="optional">(opcional)</span></label>
+                    <input id="numeroResidencia" type="text" data-api-field="dadosDeResidencia.numero">
+                </div>
+                <div class="field">
+                    <label for="complemento">Complemento <span class="optional">(opcional)</span></label>
+                    <input id="complemento" type="text" data-api-field="dadosDeResidencia.complemento">
+                </div>
+                <div class="field">
+                    <label for="pontoReferencia">Ponto de referência <span class="optional">(opcional)</span></label>
+                    <input id="pontoReferencia" type="text" data-api-field="dadosDeResidencia.pontoReferencia">
+                </div>
+                <div class="field small">
+                    <label for="cep">CEP <span class="optional">(opcional)</span></label>
+                    <input id="cep" type="text" placeholder="00000-000" autocomplete="postal-code" data-api-field="dadosDeResidencia.cep">
+                </div>
+                <div class="field">
+                    <label for="telefone">Telefone <span class="optional">(opcional)</span></label>
+                    <input id="telefone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" data-api-field="dadosDeResidencia.telefone">
+                </div>
+                <div class="field">
+                    <label for="zona">Zona <span class="optional">(opcional)</span></label>
+                    <select id="zona" data-api-field="dadosDeResidencia.zona"></select>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>
+                <span class="section-heading">
+                    <span class="section-number">04</span>
+                    <h2>Conclusão</h2>
+                </span>
+            </legend>
+            <div class="grid">
+                <div class="field">
+                    <label for="dataInvestigacao">Data da investigação *</label>
+                    <input id="dataInvestigacao" type="date" data-api-field="conclusao.dataDaInvestigacao">
+                </div>
+                <div class="field">
+                    <label for="classificacaoFinal">Classificação final *</label>
+                    <select id="classificacaoFinal" data-api-field="conclusao.classificacaoFinal"></select>
+                </div>
+                <div class="field">
+                    <label for="criterioConfirmacao">Critério de confirmação <span class="optional">(opcional)</span></label>
+                    <select id="criterioConfirmacao" data-api-field="conclusao.criterioDeConfirmacao"></select>
+                </div>
+                <div class="field">
+                    <label for="autoctone">Caso autóctone <span class="optional">(quando aplicável)</span></label>
+                    <select id="autoctone" data-api-field="conclusao.autoctone"></select>
+                </div>
+                <div class="field">
+                    <label for="ufConclusao">UF de conclusão <span class="optional">(opcional)</span></label>
+                    <select id="ufConclusao" data-api-field="conclusao.uf"></select>
+                </div>
+                <div class="field">
+                    <label for="paisConclusao">País de conclusão <span class="optional">(opcional)</span></label>
+                    <input id="paisConclusao" type="text" data-api-field="conclusao.pais">
+                </div>
+                <div class="field">
+                    <label for="municipioConclusao">Município <span class="optional">(opcional)</span></label>
+                    <input id="municipioConclusao" type="search" list="municipiosConclusao" autocomplete="off" data-api-field="conclusao.municipio">
+                    <datalist id="municipiosConclusao"></datalist>
+                </div>
+                <div class="field">
+                    <label for="distritoConclusao">Distrito <span class="optional">(opcional)</span></label>
+                    <input id="distritoConclusao" type="text" data-api-field="conclusao.distrito">
+                </div>
+                <div class="field">
+                    <label for="bairroConclusao">Bairro <span class="optional">(opcional)</span></label>
+                    <input id="bairroConclusao" type="text" data-api-field="conclusao.bairro">
+                </div>
+                <div class="field">
+                    <label for="doencaTrabalho">Relacionada ao trabalho <span class="optional">(opcional)</span></label>
+                    <select id="doencaTrabalho" data-api-field="conclusao.doencaTrabalho"></select>
+                </div>
+                <div class="field">
+                    <label for="evolucaoCaso">Evolução do caso <span class="optional">(opcional)</span></label>
+                    <select id="evolucaoCaso" data-api-field="conclusao.evolucaoCaso"></select>
+                </div>
+                <div class="field">
+                    <label for="dataObito">Data do óbito <span class="optional">(opcional)</span></label>
+                    <input id="dataObito" type="date" data-api-field="conclusao.dataObito">
+                </div>
+                <div class="field">
+                    <label for="dataEncerramento">Data de encerramento <span class="optional">(opcional)</span></label>
+                    <input id="dataEncerramento" type="date" data-api-field="conclusao.dataEncerramento">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>
+                <span class="section-heading">
+                    <span class="section-number">05</span>
+                    <h2>Complemento</h2>
+                </span>
+            </legend>
+            <div class="grid">
+                <div class="field full">
+                    <label for="observacoes">Observações adicionais <span class="optional">(opcional)</span></label>
+                    <textarea id="observacoes" data-api-field="observacoesAdicionais"></textarea>
+                    <p class="hint"><span id="contadorObservacoes">0</span>/500 caracteres</p>
+                </div>
+                <div class="field">
+                    <label for="municipioUBS">Município da UBS <span class="optional">(opcional)</span></label>
+                    <input id="municipioUBS" type="text" data-api-field="investigador.municipioUBS">
+                </div>
+                <div class="field">
+                    <label for="nomeInvestigador">Investigador <span class="optional">(opcional)</span></label>
+                    <input id="nomeInvestigador" type="text" data-api-field="investigador.nome">
+                </div>
+                <div class="field">
+                    <label for="funcaoInvestigador">Função <span class="optional">(opcional)</span></label>
+                    <input id="funcaoInvestigador" type="text" data-api-field="investigador.funcao">
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="form-actions">
+            <a class="button secondary" href="listagem.html">Cancelar</a>
+            <button id="salvar" class="button primary" type="submit">Cadastrar notificação</button>
+        </div>
+    </form>
+</main>
+
+<footer>Interface demonstrativa para a API de notificações SINAN.</footer>
+
+<script>
+    "use strict";
+
+    const API = "/notificacoes";
+    const API_MUNICIPIOS = "/ibge/estados";
+    const parametroNumero = new URLSearchParams(window.location.search).get("numero");
+    const editando = parametroNumero !== null;
+
+    const opcoes = {
+        tipoNotificacao: [
+            ["CODIGO_1", "Negativa"], ["CODIGO_2", "Individual"],
+            ["CODIGO_3", "Surto"], ["CODIGO_4", "Tracoma"]
+        ],
+        sexo: [["M", "Masculino"], ["F", "Feminino"], ["I", "Ignorado"]],
+        gestante: [
+            ["CODIGO_1", "1º trimestre"], ["CODIGO_2", "2º trimestre"],
+            ["CODIGO_3", "3º trimestre"], ["CODIGO_4", "Idade gestacional ignorada"],
+            ["CODIGO_5", "Não gestante"], ["CODIGO_6", "Não se aplica"],
+            ["CODIGO_9", "Ignorado"]
+        ],
+        raca: [
+            ["CODIGO_1", "Branca"], ["CODIGO_2", "Preta"], ["CODIGO_3", "Amarela"],
+            ["CODIGO_4", "Parda"], ["CODIGO_5", "Indígena"], ["CODIGO_9", "Ignorado"]
+        ],
+        escolaridade: [
+            ["CODIGO_0", "Analfabeto"], ["CODIGO_1", "1ª a 4ª série incompleta"],
+            ["CODIGO_2", "4ª série incompleta"], ["CODIGO_3", "5ª a 8ª série completa"],
+            ["CODIGO_4", "Ensino fundamental completo"], ["CODIGO_5", "Ensino médio incompleto"],
+            ["CODIGO_6", "Ensino médio completo"], ["CODIGO_7", "Ensino superior incompleto"],
+            ["CODIGO_8", "Ensino superior completo"], ["CODIGO_9", "Ignorado"],
+            ["CODIGO_10", "Não se aplica"]
+        ],
+        idadeUnidade: [
+            ["CODIGO_1", "Hora"], ["CODIGO_2", "Dia"],
+            ["CODIGO_3", "Mês"], ["CODIGO_4", "Ano"]
+        ],
+        zona: [
+            ["CODIGO_1", "Urbana"], ["CODIGO_2", "Rural"],
+            ["CODIGO_3", "Periurbana"], ["CODIGO_9", "Outros"]
+        ],
+        classificacaoFinal: [["CODIGO_1", "Confirmado"], ["CODIGO_2", "Descartado"]],
+        criterioConfirmacao: [
+            ["CODIGO_1", "Laboratório"], ["CODIGO_2", "Clínico-epidemiológico"]
+        ],
+        autoctone: [
+            ["CODIGO_1", "Sim"], ["CODIGO_2", "Não"], ["CODIGO_3", "Indeterminado"]
+        ],
+        doencaTrabalho: [
+            ["CODIGO_1", "Sim"], ["CODIGO_2", "Não"], ["CODIGO_9", "Ignorado"]
+        ],
+        evolucaoCaso: [
+            ["CODIGO_1", "Cura"], ["CODIGO_2", "Óbito pelo agravo notificado"],
+            ["CODIGO_3", "Óbito por outras causas"], ["CODIGO_9", "Ignorado"]
+        ]
+    };
+
+    const ufs = [
+        "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS",
+        "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC",
+        "SP", "SE", "TO"
+    ];
+
+    function preencherSelect(id, itens, obrigatorio) {
+        const select = document.getElementById(id);
+        const vazio = document.createElement("option");
+        vazio.value = "";
+        vazio.textContent = obrigatorio ? "Selecione" : "Não informado";
+        select.append(vazio);
+
+        itens.forEach(function (item) {
+            const option = document.createElement("option");
+            option.value = item[0];
+            option.textContent = item[1];
+            select.append(option);
+        });
+    }
+
+    function preencherUf(id, obrigatorio) {
+        preencherSelect(id, ufs.map(function (uf) { return [uf, uf]; }), obrigatorio);
+    }
+
+    preencherSelect("tipoNotificacao", opcoes.tipoNotificacao, true);
+    preencherSelect("sexo", opcoes.sexo, true);
+    preencherSelect("gestante", opcoes.gestante, false);
+    preencherSelect("raca", opcoes.raca, false);
+    preencherSelect("escolaridade", opcoes.escolaridade, false);
+    preencherSelect("idadeUnidade", opcoes.idadeUnidade, false);
+    preencherSelect("zona", opcoes.zona, false);
+    preencherSelect("classificacaoFinal", opcoes.classificacaoFinal, true);
+    preencherSelect("criterioConfirmacao", opcoes.criterioConfirmacao, false);
+    preencherSelect("autoctone", opcoes.autoctone, false);
+    preencherSelect("doencaTrabalho", opcoes.doencaTrabalho, false);
+    preencherSelect("evolucaoCaso", opcoes.evolucaoCaso, false);
+    preencherUf("ufNotificacao", true);
+    preencherUf("ufResidencia", false);
+    preencherUf("ufConclusao", false);
+
+    const formulario = document.getElementById("formulario");
+    const salvar = document.getElementById("salvar");
+    const status = document.getElementById("status");
+    const observacoes = document.getElementById("observacoes");
+
+    const camposMunicipio = [
+        { uf: "ufNotificacao", municipio: "municipioNotificacao", lista: "municipiosNotificacao", requisicao: 0 },
+        { uf: "ufResidencia", municipio: "municipioResidencia", lista: "municipiosResidencia", requisicao: 0 },
+        { uf: "ufConclusao", municipio: "municipioConclusao", lista: "municipiosConclusao", requisicao: 0 }
+    ];
+
+    async function carregarMunicipios(campoMunicipio, limparMunicipio) {
+        const sigla = document.getElementById(campoMunicipio.uf).value;
+        const campo = document.getElementById(campoMunicipio.municipio);
+        const lista = document.getElementById(campoMunicipio.lista);
+        const requisicao = ++campoMunicipio.requisicao;
+
+        lista.replaceChildren();
+        if (limparMunicipio) campo.value = "";
+        if (!sigla) return;
+
+        campo.setAttribute("aria-busy", "true");
+
+        try {
+            const resposta = await fetch(
+                API_MUNICIPIOS + "/" + encodeURIComponent(sigla) + "/municipios"
+            );
+            const corpo = await lerResposta(resposta);
+            if (requisicao !== campoMunicipio.requisicao) return;
+            if (!resposta.ok) throw corpo;
+
+            if (Array.isArray(corpo)) {
+                corpo.forEach(function (municipio) {
+                    if (!municipio || typeof municipio.nome !== "string") return;
+
+                    const option = document.createElement("option");
+                    option.value = municipio.nome;
+                    lista.append(option);
+                });
+            }
+        } catch (erro) {
+            if (requisicao !== campoMunicipio.requisicao) return;
+            if (limparMunicipio) {
+                mostrarStatus(
+                    "info",
+                    "Lista de municípios indisponível",
+                    mensagensDoErro(erro)
+                );
+            }
+        } finally {
+            if (requisicao === campoMunicipio.requisicao) {
+                campo.removeAttribute("aria-busy");
+            }
+        }
+    }
+
+    camposMunicipio.forEach(function (campoMunicipio) {
+        document.getElementById(campoMunicipio.uf).addEventListener("change", function () {
+            carregarMunicipios(campoMunicipio, true);
+        });
+    });
+
+    function texto(id) {
+        const valor = document.getElementById(id).value.trim();
+        return valor === "" ? null : valor;
+    }
+
+    function valor(id) {
+        const valorAtual = document.getElementById(id).value;
+        return valorAtual === "" ? null : valorAtual;
+    }
+
+    function codigoEnum(valorEnum) {
+        if (valorEnum === null || valorEnum === undefined) return "";
+        if (typeof valorEnum === "object") return valorEnum.codigo || "";
+        return String(valorEnum);
+    }
+
+    function definir(id, conteudo) {
+        const campo = document.getElementById(id);
+        if (campo) campo.value = conteudo === null || conteudo === undefined ? "" : conteudo;
+    }
+
+    function montarPayload() {
+        const nascimento = valor("dataNascimento");
+        const idadeValor = valor("idadeValor");
+        const idadeUnidade = valor("idadeUnidade");
+        const idade = nascimento || (idadeValor === null && idadeUnidade === null)
+                ? null
+                : {
+                    valor: idadeValor === null ? null : Number(idadeValor),
+                    unidade: idadeUnidade
+                };
+        const numero = valor("numero");
+
+        return {
+            numero: numero === null ? null : Number(numero),
+            dadosGerais: {
+                tipoNotificacao: valor("tipoNotificacao"),
+                agravo: texto("agravo"),
+                dataNotificacao: valor("dataNotificacao"),
+                uf: valor("ufNotificacao"),
+                municipio: texto("municipioNotificacao"),
+                ubs: texto("ubs")
+            },
+            paciente: {
+                dataPrimeirosSintomas: valor("dataPrimeirosSintomas"),
+                nome: texto("nomePaciente"),
+                dataNascimento: nascimento,
+                idade: idade,
+                sexo: valor("sexo"),
+                gestante: valor("gestante"),
+                raca: valor("raca"),
+                escolaridade: valor("escolaridade"),
+                cartaoSUS: texto("cartaoSUS"),
+                nomeMae: texto("nomeMae")
+            },
+            dadosDeResidencia: {
+                uf: valor("ufResidencia"),
+                municipio: texto("municipioResidencia"),
+                distrito: texto("distritoResidencia"),
+                bairro: texto("bairroResidencia"),
+                logradouro: texto("logradouro"),
+                numero: texto("numeroResidencia"),
+                complemento: texto("complemento"),
+                pontoReferencia: texto("pontoReferencia"),
+                cep: texto("cep"),
+                telefone: texto("telefone"),
+                zona: valor("zona"),
+                pais: texto("paisResidencia")
+            },
+            conclusao: {
+                dataDaInvestigacao: valor("dataInvestigacao"),
+                classificacaoFinal: valor("classificacaoFinal"),
+                criterioDeConfirmacao: valor("criterioConfirmacao"),
+                autoctone: valor("autoctone"),
+                uf: valor("ufConclusao"),
+                pais: texto("paisConclusao"),
+                municipio: texto("municipioConclusao"),
+                distrito: texto("distritoConclusao"),
+                bairro: texto("bairroConclusao"),
+                doencaTrabalho: valor("doencaTrabalho"),
+                evolucaoCaso: valor("evolucaoCaso"),
+                dataObito: valor("dataObito"),
+                dataEncerramento: valor("dataEncerramento")
+            },
+            observacoesAdicionais: texto("observacoes"),
+            investigador: {
+                municipioUBS: texto("municipioUBS"),
+                nome: texto("nomeInvestigador"),
+                funcao: texto("funcaoInvestigador")
+            }
+        };
+    }
+
+    function preencherFormulario(notificacao) {
+        definir("numero", notificacao.numero);
+        definir("tipoNotificacao", codigoEnum(notificacao.dadosGerais.tipoNotificacao));
+        definir("agravo", notificacao.dadosGerais.agravo);
+        definir("dataNotificacao", notificacao.dadosGerais.dataNotificacao);
+        definir("ufNotificacao", codigoEnum(notificacao.dadosGerais.uf));
+        definir("municipioNotificacao", notificacao.dadosGerais.municipio);
+        definir("ubs", notificacao.dadosGerais.ubs);
+
+        definir("dataPrimeirosSintomas", notificacao.paciente.dataPrimeirosSintomas);
+        definir("nomePaciente", notificacao.paciente.nome);
+        definir("dataNascimento", notificacao.paciente.dataNascimento);
+        definir("idadeValor", notificacao.paciente.idade && notificacao.paciente.idade.valor);
+        definir("idadeUnidade", codigoEnum(notificacao.paciente.idade && notificacao.paciente.idade.unidade));
+        definir("sexo", codigoEnum(notificacao.paciente.sexo));
+        definir("gestante", codigoEnum(notificacao.paciente.gestante));
+        definir("raca", codigoEnum(notificacao.paciente.raca));
+        definir("escolaridade", codigoEnum(notificacao.paciente.escolaridade));
+        definir("cartaoSUS", notificacao.paciente.cartaoSUS);
+        definir("nomeMae", notificacao.paciente.nomeMae);
+
+        const residencia = notificacao.dadosDeResidencia;
+        definir("ufResidencia", codigoEnum(residencia.uf));
+        definir("municipioResidencia", residencia.municipio);
+        definir("distritoResidencia", residencia.distrito);
+        definir("bairroResidencia", residencia.bairro);
+        definir("logradouro", residencia.logradouro);
+        definir("numeroResidencia", residencia.numero);
+        definir("complemento", residencia.complemento);
+        definir("pontoReferencia", residencia.pontoReferencia);
+        definir("cep", residencia.cep);
+        definir("telefone", residencia.telefone);
+        definir("zona", codigoEnum(residencia.zona));
+        definir("paisResidencia", residencia.pais);
+
+        const conclusao = notificacao.conclusao;
+        definir("dataInvestigacao", conclusao.dataDaInvestigacao);
+        definir("classificacaoFinal", codigoEnum(conclusao.classificacaoFinal));
+        definir("criterioConfirmacao", codigoEnum(conclusao.criterioDeConfirmacao));
+        definir("autoctone", codigoEnum(conclusao.autoctone));
+        definir("ufConclusao", codigoEnum(conclusao.uf));
+        definir("paisConclusao", conclusao.pais);
+        definir("municipioConclusao", conclusao.municipio);
+        definir("distritoConclusao", conclusao.distrito);
+        definir("bairroConclusao", conclusao.bairro);
+        definir("doencaTrabalho", codigoEnum(conclusao.doencaTrabalho));
+        definir("evolucaoCaso", codigoEnum(conclusao.evolucaoCaso));
+        definir("dataObito", conclusao.dataObito);
+        definir("dataEncerramento", conclusao.dataEncerramento);
+
+        definir("observacoes", notificacao.observacoesAdicionais);
+        if (notificacao.investigador) {
+            definir("municipioUBS", notificacao.investigador.municipioUBS);
+            definir("nomeInvestigador", notificacao.investigador.nome);
+            definir("funcaoInvestigador", notificacao.investigador.funcao);
+        }
+
+        camposMunicipio.forEach(function (campoMunicipio) {
+            carregarMunicipios(campoMunicipio, false);
+        });
+
+        atualizarContador();
+    }
+
+    function limparErrosDeCampo() {
+        document.querySelectorAll('[aria-invalid="true"]').forEach(function (campo) {
+            campo.removeAttribute("aria-invalid");
+            campo.removeAttribute("title");
+        });
+    }
+
+    function mensagensDoErro(corpo) {
+        if (!corpo) return ["A API não retornou detalhes sobre o erro."];
+        if (typeof corpo === "string") return [corpo];
+
+        const mensagens = [];
+        if (corpo.detail) mensagens.push(corpo.detail);
+
+        if (Array.isArray(corpo.erros)) {
+            corpo.erros.forEach(function (erro) { mensagens.push(String(erro)); });
+        } else if (corpo.erros && typeof corpo.erros === "object") {
+            Object.entries(corpo.erros).forEach(function (entrada) {
+                const campo = entrada[0];
+                const erros = Array.isArray(entrada[1]) ? entrada[1] : [entrada[1]];
+                const elemento = document.querySelector('[data-api-field="' + CSS.escape(campo) + '"]');
+
+                erros.forEach(function (erro) {
+                    mensagens.push(campo + ": " + erro);
+                });
+
+                if (elemento) {
+                    elemento.setAttribute("aria-invalid", "true");
+                    elemento.title = erros.join(" ");
+                }
+            });
+        }
+
+        if (mensagens.length === 0 && corpo.title) mensagens.push(corpo.title);
+        return mensagens.length > 0 ? mensagens : ["Não foi possível concluir a operação."];
+    }
+
+    function mostrarStatus(tipo, titulo, mensagens) {
+        status.replaceChildren();
+        status.className = "status visible " + tipo;
+
+        const destaque = document.createElement("strong");
+        destaque.textContent = titulo;
+        status.append(destaque);
+
+        if (mensagens && mensagens.length) {
+            const lista = document.createElement("ul");
+            mensagens.forEach(function (mensagem) {
+                const item = document.createElement("li");
+                item.textContent = mensagem;
+                lista.append(item);
+            });
+            status.append(lista);
+        }
+
+        status.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    async function lerResposta(resposta) {
+        if (resposta.status === 204) return null;
+        const tipo = resposta.headers.get("content-type") || "";
+        return tipo.includes("json") ? resposta.json() : resposta.text();
+    }
+
+    async function carregarEdicao() {
+        if (!editando) return;
+
+        document.getElementById("tituloPagina").textContent = "Alterar notificação";
+        document.getElementById("modo").textContent = "Modo alteração · Nº " + parametroNumero;
+        document.getElementById("numero").readOnly = true;
+        salvar.textContent = "Salvar alterações";
+        salvar.disabled = true;
+        mostrarStatus("info", "Carregando notificação…", []);
+
+        try {
+            const resposta = await fetch(API + "/" + encodeURIComponent(parametroNumero));
+            const corpo = await lerResposta(resposta);
+            if (!resposta.ok) throw corpo;
+            preencherFormulario(corpo);
+            status.className = "status";
+        } catch (erro) {
+            mostrarStatus("error", "Não foi possível carregar a notificação", mensagensDoErro(erro));
+        } finally {
+            salvar.disabled = false;
+        }
+    }
+
+    function atualizarContador() {
+        document.getElementById("contadorObservacoes").textContent = String(observacoes.value.length);
+    }
+
+    observacoes.addEventListener("input", atualizarContador);
+
+    formulario.addEventListener("submit", async function (evento) {
+        evento.preventDefault();
+        limparErrosDeCampo();
+        status.className = "status";
+
+        salvar.disabled = true;
+        salvar.textContent = editando ? "Salvando…" : "Cadastrando…";
+
+        try {
+            const resposta = await fetch(
+                editando ? API + "/" + encodeURIComponent(parametroNumero) : API,
+                {
+                    method: editando ? "PUT" : "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(montarPayload())
+                }
+            );
+            const corpo = await lerResposta(resposta);
+            if (!resposta.ok) throw corpo;
+
+            mostrarStatus(
+                "success",
+                editando ? "Notificação atualizada" : "Notificação cadastrada",
+                ["Os dados foram salvos com sucesso."]
+            );
+
+            if (!editando) {
+                formulario.reset();
+                camposMunicipio.forEach(function (campoMunicipio) {
+                    document.getElementById(campoMunicipio.lista).replaceChildren();
+                    campoMunicipio.requisicao += 1;
+                });
+                atualizarContador();
+            }
+        } catch (erro) {
+            mostrarStatus("error", "Revise os dados informados", mensagensDoErro(erro));
+        } finally {
+            salvar.disabled = false;
+            salvar.textContent = editando ? "Salvar alterações" : "Cadastrar notificação";
+        }
+    });
+
+    atualizarContador();
+    carregarEdicao();
+</script>
+</body>
+</html>

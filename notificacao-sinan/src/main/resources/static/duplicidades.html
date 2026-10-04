@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Notificação SINAN | Duplicidades</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Ir para as duplicidades</a>
+
+<header class="topbar">
+    <nav class="nav" aria-label="Navegação principal">
+        <a class="brand" href="index.html">
+            <span class="brand-mark" aria-hidden="true">+</span>
+            <span>Notificação SINAN</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Cadastro</a>
+            <a href="listagem.html">Listagem</a>
+            <a href="duplicidades.html" aria-current="page">Duplicidades</a>
+        </div>
+    </nav>
+</header>
+
+<main id="conteudo" class="shell">
+    <header class="hero">
+        <div>
+            <p class="eyebrow">Verificação de registros</p>
+            <h1>Possíveis duplicidades</h1>
+            <p class="intro">Consulte as notificações que a API identificou como duplicadas e escolha se deseja alterá-las ou excluí-las.</p>
+        </div>
+        <a class="button secondary" href="listagem.html">Ver todas</a>
+    </header>
+
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+
+    <section class="table-card" aria-labelledby="tituloTabela">
+        <div class="table-summary">
+            <div>
+                <h2 id="tituloTabela" class="table-title">Notificações duplicadas</h2>
+                <p id="resumo">Carregando duplicidades…</p>
+            </div>
+        </div>
+
+        <div class="table-scroll">
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Número</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Agravo</th>
+                    <th scope="col">Paciente</th>
+                    <th scope="col">Nascimento</th>
+                    <th scope="col">Nome da mãe</th>
+                    <th scope="col">Ações</th>
+                </tr>
+                </thead>
+                <tbody id="corpoTabela">
+                <tr>
+                    <td class="empty-cell" colspan="7">Carregando dados…</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer>Interface demonstrativa para a API de notificações SINAN.</footer>
+
+<script>
+    "use strict";
+
+    const API = "/notificacoes";
+    const corpoTabela = document.getElementById("corpoTabela");
+    const resumo = document.getElementById("resumo");
+    const status = document.getElementById("status");
+
+    function descricao(valor) {
+        if (valor === null || valor === undefined) return "—";
+        if (typeof valor === "object") return valor.descricao || valor.codigo || "—";
+        return String(valor);
+    }
+
+    function formatarData(data) {
+        if (!data) return "—";
+        const partes = String(data).split("-");
+        if (partes.length !== 3) return String(data);
+        return partes[2] + "/" + partes[1] + "/" + partes[0];
+    }
+
+    function mostrarStatus(tipo, titulo, mensagens) {
+        status.replaceChildren();
+        status.className = "status visible " + tipo;
+
+        const destaque = document.createElement("strong");
+        destaque.textContent = titulo;
+        status.append(destaque);
+
+        if (mensagens && mensagens.length) {
+            const lista = document.createElement("ul");
+            mensagens.forEach(function (mensagem) {
+                const item = document.createElement("li");
+                item.textContent = mensagem;
+                lista.append(item);
+            });
+            status.append(lista);
+        }
+    }
+
+    function mensagensDoErro(corpo) {
+        if (!corpo) return ["A API não retornou detalhes sobre o erro."];
+        if (typeof corpo === "string") return [corpo];
+
+        const mensagens = [];
+        if (corpo.detail) mensagens.push(corpo.detail);
+        if (Array.isArray(corpo.erros)) {
+            corpo.erros.forEach(function (erro) { mensagens.push(String(erro)); });
+        } else if (corpo.erros && typeof corpo.erros === "object") {
+            Object.entries(corpo.erros).forEach(function (entrada) {
+                const erros = Array.isArray(entrada[1]) ? entrada[1] : [entrada[1]];
+                erros.forEach(function (erro) {
+                    mensagens.push(entrada[0] + ": " + erro);
+                });
+            });
+        }
+        if (mensagens.length === 0 && corpo.title) mensagens.push(corpo.title);
+        return mensagens.length ? mensagens : ["Não foi possível concluir a operação."];
+    }
+
+    async function lerResposta(resposta) {
+        if (resposta.status === 204) return null;
+        const tipo = resposta.headers.get("content-type") || "";
+        return tipo.includes("json") ? resposta.json() : resposta.text();
+    }
+
+    function adicionarTexto(celula, principal, detalhe) {
+        const forte = document.createElement("span");
+        forte.className = "cell-main";
+        forte.textContent = principal || "—";
+        celula.append(forte);
+
+        if (detalhe) {
+            const nota = document.createElement("span");
+            nota.className = "cell-note";
+            nota.textContent = detalhe;
+            celula.append(nota);
+        }
+    }
+
+    function celula(linha, principal, detalhe) {
+        const td = document.createElement("td");
+        adicionarTexto(td, principal, detalhe);
+        linha.append(td);
+    }
+
+    function renderizarTabela(itens) {
+        corpoTabela.replaceChildren();
+
+        if (!itens.length) {
+            const linha = document.createElement("tr");
+            const td = document.createElement("td");
+            td.className = "empty-cell";
+            td.colSpan = 7;
+            td.textContent = "Nenhuma duplicidade foi identificada pela API.";
+            linha.append(td);
+            corpoTabela.append(linha);
+            return;
+        }
+
+        itens.forEach(function (notificacao) {
+            const linha = document.createElement("tr");
+            celula(linha, String(notificacao.numero));
+            celula(linha, formatarData(notificacao.dadosGerais.dataNotificacao));
+            celula(linha, notificacao.dadosGerais.agravo, descricao(notificacao.dadosGerais.tipoNotificacao));
+            celula(linha, notificacao.paciente.nome, descricao(notificacao.paciente.sexo));
+            celula(linha, formatarData(notificacao.paciente.dataNascimento));
+            celula(linha, notificacao.paciente.nomeMae);
+
+            const acoes = document.createElement("td");
+            const grupo = document.createElement("div");
+            grupo.className = "actions";
+
+            const editar = document.createElement("a");
+            editar.className = "button secondary compact";
+            editar.href = "index.html?numero=" + encodeURIComponent(notificacao.numero);
+            editar.textContent = "Alterar";
+            editar.setAttribute("aria-label", "Alterar notificação " + notificacao.numero);
+
+            const excluir = document.createElement("button");
+            excluir.className = "button danger compact";
+            excluir.type = "button";
+            excluir.textContent = "Excluir";
+            excluir.setAttribute("aria-label", "Excluir notificação " + notificacao.numero);
+            excluir.addEventListener("click", function () {
+                excluirNotificacao(notificacao.numero, excluir);
+            });
+
+            grupo.append(editar, excluir);
+            acoes.append(grupo);
+            linha.append(acoes);
+            corpoTabela.append(linha);
+        });
+    }
+
+    async function carregar() {
+        try {
+            const resposta = await fetch(API + "/duplicidades");
+            const corpo = await lerResposta(resposta);
+            if (!resposta.ok) throw corpo;
+
+            const itens = Array.isArray(corpo) ? corpo : [];
+            renderizarTabela(itens);
+            resumo.textContent = itens.length === 1
+                ? "1 notificação duplicada"
+                : itens.length + " notificações duplicadas";
+        } catch (erro) {
+            renderizarTabela([]);
+            resumo.textContent = "Falha ao consultar a API";
+            mostrarStatus("error", "Não foi possível carregar as duplicidades", mensagensDoErro(erro));
+        }
+    }
+
+    async function excluirNotificacao(numero, botao) {
+        const confirmou = window.confirm("Excluir definitivamente a notificação " + numero + "?");
+        if (!confirmou) return;
+
+        botao.disabled = true;
+        botao.textContent = "Excluindo…";
+
+        try {
+            const resposta = await fetch(API + "/" + encodeURIComponent(numero), { method: "DELETE" });
+            const corpo = await lerResposta(resposta);
+            if (!resposta.ok) throw corpo;
+
+            mostrarStatus("success", "Notificação excluída", ["O registro " + numero + " foi removido."]);
+            await carregar();
+        } catch (erro) {
+            mostrarStatus("error", "Não foi possível excluir a notificação", mensagensDoErro(erro));
+            botao.disabled = false;
+            botao.textContent = "Excluir";
+        }
+    }
+
+    carregar();
+</script>
+</body>
+</html>
