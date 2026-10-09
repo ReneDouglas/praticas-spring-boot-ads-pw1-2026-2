@@ -19,8 +19,7 @@ public class AlunosController {
     @GetMapping(path = "/{matricula}")
     public ResponseEntity<Aluno> listar(
             @PathVariable String matricula,
-            @RequestParam(required = false) String curso
-    ) {
+            @RequestParam(required = false) String curso) {
         Aluno aluno = alunosService.listar(matricula, curso);
         if (aluno != null) {
             return ResponseEntity.ok(aluno);
@@ -30,19 +29,19 @@ public class AlunosController {
         /***
          * Retorno utilizando streams
          *
-        return alunos
-                .stream()
-                .filter(aluno -> aluno.matricula().toString().equals(matricula))
-                .findFirst()
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+         * return alunos
+         * .stream()
+         * .filter(aluno -> aluno.matricula().toString().equals(matricula))
+         * .findFirst()
+         * .map(ResponseEntity::ok)
+         * .orElse(ResponseEntity.notFound().build());
          ***/
 
     }
 
     @PostMapping
     public ResponseEntity<Aluno> cadastrar(
-            @RequestBody Aluno aluno){
+            @RequestBody Aluno aluno) {
         Aluno novoAluno = alunosService.cadastrar(aluno);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -51,7 +50,7 @@ public class AlunosController {
 
     @PostMapping("/form")
     public ResponseEntity<String> cadastrarForm(
-            @ModelAttribute Aluno aluno){
+            @ModelAttribute Aluno aluno) {
         Aluno novoAluno = alunosService.cadastrar(aluno);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
