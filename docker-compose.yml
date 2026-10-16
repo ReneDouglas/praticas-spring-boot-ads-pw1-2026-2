@@ -7,6 +7,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sinandb
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   api-notificacao-sinan:
     build:
@@ -15,17 +20,21 @@ services:
     ports:
       - "8081:8080"
   
-  mysql:
-    image: mysql:8.0
+  postgres:
+    image: postgres:18
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: sinandb
-      MYSQL_USER: sinan
-      MYSQL_PASSWORD: sinan123
+      POSTGRES_DB: sinandb
+      POSTGRES_USER: sinan
+      POSTGRES_PASSWORD: sinan123
+      TZ: America/Fortaleza
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sinan -d sinandb"]
+      interval: 5s
+      retries: 10
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql
 
 volumes:
-  mysql_data:
+  postgres_data:
