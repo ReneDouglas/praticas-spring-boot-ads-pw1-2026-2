@@ -17,10 +17,10 @@ public class AlunosController {
     }
 
     @GetMapping(path = "/{matricula}")
-    public ResponseEntity<Aluno> listar(
+    public ResponseEntity<AlunoDTO> listar(
             @PathVariable String matricula,
             @RequestParam(required = false) String curso) {
-        Aluno aluno = alunosService.listar(matricula, curso);
+        AlunoDTO aluno = alunosService.listar(matricula, curso);
         if (aluno != null) {
             return ResponseEntity.ok(aluno);
         }
@@ -40,9 +40,9 @@ public class AlunosController {
     }
 
     @PostMapping
-    public ResponseEntity<Aluno> cadastrar(
-            @RequestBody Aluno aluno) {
-        Aluno novoAluno = alunosService.cadastrar(aluno);
+    public ResponseEntity<AlunoDTO> cadastrar(
+            @RequestBody AlunoDTO aluno) {
+        AlunoDTO novoAluno = alunosService.cadastrar(aluno);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(novoAluno);
@@ -50,8 +50,8 @@ public class AlunosController {
 
     @PostMapping("/form")
     public ResponseEntity<String> cadastrarForm(
-            @ModelAttribute Aluno aluno) {
-        Aluno novoAluno = alunosService.cadastrar(aluno);
+            @ModelAttribute AlunoDTO aluno) {
+        AlunoDTO novoAluno = alunosService.cadastrar(aluno);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body("Aluno cadastrado com sucesso!");

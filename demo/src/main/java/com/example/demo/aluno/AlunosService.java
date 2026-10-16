@@ -7,24 +7,25 @@ import java.util.ArrayList;
 @Service
 public class AlunosService {
 
-    private final ArrayList<Aluno> alunos;
+    private final AlunoRepository alunoRepository;
 
-    public AlunosService(ArrayList<Aluno> alunos) {
-        this.alunos = alunos;
+    public AlunosService(AlunoRepository alunoRepository) {
+        this.alunoRepository = alunoRepository;
     }
 
-    public Aluno listar(String matricula, String curso) {
-        for (Aluno aluno : alunos) {
-            if (aluno.matricula().toString().equals(matricula)) {
-                return  aluno;
-            }
-        }
-        return null;
+    public AlunoDTO listar(String matricula, String curso) {
+        Aluno alunoEntity = alunoRepository
+                .findByMatriculaAndCurso(Integer.valueOf(matricula), curso)
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+
+        return alunoEntity.toDTO();
     }
 
-    public Aluno cadastrar(Aluno aluno){
-        alunos.add(aluno);
+    public AlunoDTO cadastrar(AlunoDTO aluno){
+        Aluno alunoEntity = new Aluno();
+        alunoEntity.fromDTO(aluno);
+        alunoEntity = alunoRepository.save(alunoEntity);
 
-        return aluno;
+        return alunoEntity.toDTO();
     }
 }
